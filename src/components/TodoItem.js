@@ -1,9 +1,9 @@
 import { format } from 'date-fns';
 import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import React, { useEffect, useState } from 'react';
 import { MdDelete, MdEdit } from 'react-icons/md';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { deleteTodo, updateTodo } from '../slices/todoSlice';
 import styles from '../styles/modules/todoItem.module.scss';
 import { getClasses } from '../utils/getClasses';
@@ -22,6 +22,10 @@ function TodoItem({ todo }) {
   const dispatch = useDispatch();
   const [checked, setChecked] = useState(false);
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
+  const categories = useSelector((state) => state.todo.categories);
+  const category = categories.find((cat) => cat.id === todo.categoryId);
+  const categoryName = category ? category.name : 'Default';
+  const categoryColor = category ? category.color : '#000000';
 
   useEffect(() => {
     if (todo.status === 'complete') {
@@ -49,7 +53,13 @@ function TodoItem({ todo }) {
 
   return (
     <>
-      <motion.div className={styles.item} variants={child}>
+      <motion.div
+        className={styles.item}
+        variants={child}
+        style={{
+          border: `2px solid ${categoryColor}`,
+        }}
+      >
         <div className={styles.todoDetails}>
           <CheckButton checked={checked} handleCheck={handleCheck} />
           <div className={styles.texts}>
@@ -63,6 +73,8 @@ function TodoItem({ todo }) {
             </p>
             <p className={styles.time}>
               {format(new Date(todo.time), 'p, MM/dd/yyyy')}
+              &emsp;|&emsp;
+              <span style={{ color: categoryColor }}>{categoryName}</span>
             </p>
           </div>
         </div>

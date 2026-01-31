@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { v4 as uuid } from 'uuid';
-import { MdOutlineClose } from 'react-icons/md';
-import { useDispatch } from 'react-redux';
-import { AnimatePresence, motion } from 'framer-motion';
-import toast from 'react-hot-toast';
 import { format } from 'date-fns';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
+import { MdOutlineClose } from 'react-icons/md';
+import { useDispatch, useSelector } from 'react-redux';
+import { v4 as uuid } from 'uuid';
 import { addTodo, updateTodo } from '../slices/todoSlice';
 import styles from '../styles/modules/modal.module.scss';
 import Button from './Button';
@@ -34,14 +34,18 @@ function TodoModal({ type, modalOpen, setModalOpen, todo }) {
   const dispatch = useDispatch();
   const [title, setTitle] = useState('');
   const [status, setStatus] = useState('incomplete');
+  const [categoryId, setCategoryId] = useState('cat_default');
+  const categories = useSelector((state) => state.todo.categories);
 
   useEffect(() => {
     if (type === 'update' && todo) {
       setTitle(todo.title);
       setStatus(todo.status);
+      setCategoryId(todo.categoryId);
     } else {
       setTitle('');
       setStatus('incomplete');
+      setCategoryId('cat_default');
     }
   }, [type, todo, modalOpen]);
 
@@ -59,13 +63,18 @@ function TodoModal({ type, modalOpen, setModalOpen, todo }) {
             title,
             status,
             time: format(new Date(), 'p, MM/dd/yyyy'),
+            categoryId,
           })
         );
         toast.success('Task added successfully');
       }
       if (type === 'update') {
-        if (todo.title !== title || todo.status !== status) {
-          dispatch(updateTodo({ ...todo, title, status }));
+        if (
+          todo.title !== title ||
+          todo.status !== status ||
+          todo.categoryId !== categoryId
+        ) {
+          dispatch(updateTodo({ ...todo, title, status, categoryId }));
           toast.success('Task Updated successfully');
         } else {
           toast.error('No changes made');
@@ -128,6 +137,24 @@ function TodoModal({ type, modalOpen, setModalOpen, todo }) {
                 >
                   <option value="incomplete">Incomplete</option>
                   <option value="complete">Completed</option>
+                </select>
+              </label>
+              <label htmlFor="categoryId">
+                categoryId
+                <select
+                  id="categoryId"
+                  value={categoryId}
+                  onChange={(e) => setCategoryId(e.target.value)}
+                >
+                  {categories.map((cat) => (
+                    <option
+                      key={cat.id}
+                      value={cat.id}
+                      style={{ color: cat.color }}
+                    >
+                      ● {cat.name}
+                    </option>
+                  ))}
                 </select>
               </label>
               <div className={styles.buttonContainer}>

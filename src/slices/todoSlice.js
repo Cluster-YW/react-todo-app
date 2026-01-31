@@ -7,12 +7,18 @@ const getInitialTodo = () => {
   if (localTodoList) {
     return JSON.parse(localTodoList);
   }
-  window.localStorage.setItem('todoList', []);
+  window.localStorage.setItem('todoList', '[]');
   return [];
 };
 
 const initialValue = {
   filterStatus: 'all',
+  categories: [
+    { id: 'cat_default', name: 'Default', color: '#999' },
+    { id: 'cat_work', name: 'Work', color: '#616ddc' },
+    { id: 'cat_study', name: 'Study', color: '#f5a623' },
+    { id: 'cat_life', name: 'Life', color: '#4ec6ef' },
+  ],
   todoList: getInitialTodo(),
 };
 
@@ -21,7 +27,10 @@ export const todoSlice = createSlice({
   initialState: initialValue,
   reducers: {
     addTodo: (state, action) => {
+      // update state in redux store
       state.todoList.push(action.payload);
+
+      // update state in local storage
       const todoList = window.localStorage.getItem('todoList');
       if (todoList) {
         const todoListArr = JSON.parse(todoList);
@@ -41,6 +50,7 @@ export const todoSlice = createSlice({
       }
     },
     updateTodo: (state, action) => {
+      // update state in local storage
       const todoList = window.localStorage.getItem('todoList');
       if (todoList) {
         const todoListArr = JSON.parse(todoList);
@@ -48,13 +58,17 @@ export const todoSlice = createSlice({
           if (todo.id === action.payload.id) {
             todo.status = action.payload.status;
             todo.title = action.payload.title;
+            todo.category = action.payload.category;
           }
         });
         window.localStorage.setItem('todoList', JSON.stringify(todoListArr));
+
+        // update state in redux store
         state.todoList = [...todoListArr];
       }
     },
     deleteTodo: (state, action) => {
+      // update state in local storage
       const todoList = window.localStorage.getItem('todoList');
       if (todoList) {
         const todoListArr = JSON.parse(todoList);
@@ -64,6 +78,8 @@ export const todoSlice = createSlice({
           }
         });
         window.localStorage.setItem('todoList', JSON.stringify(todoListArr));
+
+        // update state in redux store
         state.todoList = todoListArr;
       }
     },
