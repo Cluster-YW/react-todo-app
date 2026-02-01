@@ -24,6 +24,7 @@ function TodoItem({ todo }) {
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
   const categories = useSelector((state) => state.todo.categories);
   const category = categories.find((cat) => cat.id === todo.categoryId);
+  const categoryId = category ? category.id : 'cat_default';
   const categoryName = category ? category.name : 'Default';
   const categoryColor = category ? category.color : '#000000';
 
@@ -75,6 +76,7 @@ function TodoItem({ todo }) {
               {format(new Date(todo.time), 'p, MM/dd/yyyy')}
               &emsp;|&emsp;
               <span style={{ color: categoryColor }}>{categoryName}</span>
+              {/* <span> {categoryId} </span> */}
             </p>
           </div>
         </div>

@@ -13,6 +13,7 @@ const getInitialTodo = () => {
 
 const initialValue = {
   filterStatus: 'all',
+  filterCategoriesId: 'all',
   categories: [
     { id: 'cat_default', name: 'Default', color: '#999' },
     { id: 'cat_work', name: 'Work', color: '#616ddc' },
@@ -86,9 +87,17 @@ export const todoSlice = createSlice({
     updateFilterStatus: (state, action) => {
       state.filterStatus = action.payload;
     },
+    updateFilterCategoriesId: (state, action) => {
+      state.filterCategoriesId = action.payload;
+    },
   },
 });
 
-export const { addTodo, updateTodo, deleteTodo, updateFilterStatus } =
-  todoSlice.actions;
+export const {
+  addTodo,
+  updateTodo,
+  deleteTodo,
+  updateFilterStatus,
+  updateFilterCategoriesId,
+} = todoSlice.actions;
 export default todoSlice.reducer;
