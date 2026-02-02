@@ -60,6 +60,9 @@ function TodoItem({ todo }) {
         style={{
           border: `2px solid ${categoryColor}`,
         }}
+        key={todo.id}
+        layout
+        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
       >
         <div className={styles.todoDetails}>
           <CheckButton checked={checked} handleCheck={handleCheck} />

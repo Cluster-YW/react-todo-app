@@ -21,6 +21,14 @@ const child = {
   },
 };
 
+function todoCompare(a, b) {
+  if (a.status === 'complete' && b.status === 'complete')
+    return new Date(b.time) - new Date(a.time);
+  if (a.status === 'complete') return 1;
+  if (b.status === 'complete') return -1;
+  return new Date(b.time) - new Date(a.time);
+}
+
 function AppContent() {
   const todoList = useSelector((state) => state.todo.todoList);
   const filterStatus = useSelector((state) => state.todo.filterStatus);
@@ -29,7 +37,7 @@ function AppContent() {
   );
 
   const sortedTodoList = [...todoList];
-  sortedTodoList.sort((a, b) => new Date(b.time) - new Date(a.time));
+  sortedTodoList.sort(todoCompare);
 
   const filteredTodoList = sortedTodoList.filter((item) => {
     console.log(item.categoryId, filterCategoriesId);
@@ -48,11 +56,7 @@ function AppContent() {
     >
       <AnimatePresence>
         {filteredTodoList && filteredTodoList.length > 0 ? (
-          filteredTodoList.map((todo) => (
-            // <motion.div key={todo.id} variants={child}>
-            <TodoItem key={todo.id} todo={todo} />
-            // </motion.div>
-          ))
+          filteredTodoList.map((todo) => <TodoItem key={todo.id} todo={todo} />)
         ) : (
           <motion.p variants={child} className={styles.emptyText}>
             No Todos
