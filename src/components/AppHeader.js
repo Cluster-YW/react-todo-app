@@ -7,10 +7,12 @@ import {
 
 import styles from '../styles/modules/app.module.scss';
 import Button, { SelectButton } from './Button';
+import CategoryManager from './CategoryManager';
 import TodoModal from './TodoModal';
 
 function AppHeader() {
   const [modalOpen, setModalOpen] = useState(false);
+  const [catManagerOpen, setCatManagerOpen] = useState(false);
   const initialFilterStatus = useSelector((state) => state.todo.filterStatus);
   const [filterStatus, setFilterStatus] = useState(initialFilterStatus);
   const [filterCategoriesId, setFilterCategoriesId] = useState('all');
@@ -52,6 +54,13 @@ function AppHeader() {
             </option>
           ))}
         </SelectButton>
+        <Button
+          variant="primary"
+          onClick={() => setCatManagerOpen(true)}
+          style={{ marginLeft: '10px' }}
+        >
+          ≡
+        </Button>
         {/* <span>{filterCategoriesId}</span> */}
       </div>
 
@@ -71,6 +80,10 @@ function AppHeader() {
           type="add"
           modalOpen={modalOpen}
           setModalOpen={setModalOpen}
+        />
+        <CategoryManager
+          isOpen={catManagerOpen}
+          onClose={() => setCatManagerOpen(false)}
         />
       </div>
     </div>
