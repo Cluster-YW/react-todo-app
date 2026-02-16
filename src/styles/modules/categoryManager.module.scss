@@ -59,3 +59,42 @@
   margin-bottom: 2rem;
   text-transform: capitalize;
 }
+
+.newCategoryForm {
+  margin-top: 2rem;
+  width: 100%;
+}
+
+.inputRow {
+  display: flex;
+}
+
+.categoryInput {
+  flex: 1;
+  padding: 0.8rem 1.2rem;
+  border-radius: 5px;
+  border-width: 0;
+  &:focus {
+    outline: none;
+  }
+}
+
+.categoryColorpicker {
+  margin-left: 1rem;
+  width: 3em;
+  height: 3em;
+  border-width: 0;
+}
+
+.addCategoryButton {
+  margin-left: 1rem;
+  width: 3em;
+  height: 3em;
+  border: 0;
+  box-shadow: none;
+  cursor: pointer;
+  transition: 0.3s ease background-color;
+  &:hover {
+    background-color: var(--grey-2);
+  }
+}

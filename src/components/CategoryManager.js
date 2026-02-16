@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { MdOutlineClose } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from '../styles/modules/categoryManager.module.scss';
+import Button from './Button';
 import CategoryItem from './CategoryItem';
 
 const dropIn = {
@@ -65,6 +66,24 @@ function CategoryManager({ isOpen, onClose }) {
               {categories.map((category) => (
                 <CategoryItem key={category.id} category={category} />
               ))}
+            </div>
+
+            <div className={styles.newCategoryForm}>
+              <div className={styles.inputRow}>
+                <input
+                  type="text"
+                  placeholder="Enter category name..."
+                  className={styles.categoryInput}
+                />
+                <input
+                  type="color"
+                  defaultValue="#000000"
+                  className={styles.categoryColorpicker}
+                />
+                <Button variant="primary" className={styles.addCategoryButton}>
+                  +
+                </Button>
+              </div>
             </div>
           </motion.div>
         </motion.div>
